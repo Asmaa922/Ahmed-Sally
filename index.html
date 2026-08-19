@@ -1069,6 +1069,151 @@
 
   loadWishes();
   </script>
+<script>
+/* ===== Floating petals ===== */
+(function () {
+  const petalsCount = 18;
 
+  function createPetal() {
+    const petal = document.createElement("span");
+    petal.className = "petal";
+
+    petal.style.left = Math.random() * 100 + "vw";
+    petal.style.top = (-20 - Math.random() * 30) + "px";
+    petal.style.width = (9 + Math.random() * 8) + "px";
+    petal.style.height = (9 + Math.random() * 8) + "px";
+    petal.style.animationDuration = (7 + Math.random() * 8) + "s";
+    petal.style.animationDelay = (Math.random() * 8) + "s";
+    petal.style.opacity = (0.3 + Math.random() * 0.35).toFixed(2);
+
+    document.body.appendChild(petal);
+  }
+
+  for (let i = 0; i < petalsCount; i++) {
+    createPetal();
+  }
+})();
+</script>
+  <script>
+/* ===== Wishes ===== */
+
+const WISH_API =
+"https://script.google.com/macros/s/AKfycbxPgU-bMRmgjWJZ8168jtqS7Fat1Bgjs0sadKqznUFP9nmuW7Dyrr1z9Rcv5XNSHczs/exec";
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.querySelector(".wish-form");
+
+  if (!form) return;
+
+  const nameInput = form.querySelector("input");
+  const messageInput = form.querySelector("textarea");
+  const button = form.querySelector(".wish-submit");
+
+  let list = document.querySelector(".wish-list");
+
+  /* لو قائمة التهاني مش موجودة، نعملها */
+  if (!list) {
+    list = document.createElement("div");
+    list.className = "wish-list";
+    form.parentNode.insertBefore(list, form.nextSibling);
+  }
+
+  function showWish(name, message) {
+    const item = document.createElement("div");
+    item.className = "wish-item";
+
+    const person = document.createElement("div");
+    person.className = "wish-item-name";
+    person.textContent = name;
+
+    const text = document.createElement("div");
+    text.className = "wish-item-text";
+    text.textContent = message;
+
+    item.appendChild(person);
+    item.appendChild(text);
+
+    list.prepend(item);
+  }
+
+  /* تحميل التهاني القديمة */
+  fetch(WISH_API)
+    .then(response => response.json())
+    .then(data => {
+
+      if (!Array.isArray(data)) return;
+
+      list.innerHTML = "";
+
+      data.forEach(wish => {
+        if (wish.name && wish.message) {
+          showWish(wish.name, wish.message);
+        }
+      });
+
+    })
+    .catch(error => {
+      console.log("لم يتم تحميل التهاني:", error);
+    });
+
+
+  /* إرسال تهنئة جديدة */
+  form.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+
+    if (!name || !message) {
+      alert("من فضلك اكتبي اسمك والتهنئة ❤️");
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "جاري الإرسال...";
+
+    const data = new URLSearchParams();
+    data.append("name", name);
+    data.append("message", message);
+
+    fetch(WISH_API, {
+      method: "POST",
+      body: data
+    })
+    .then(response => response.text())
+    .then(() => {
+
+      /* تظهر فورًا تحت الفورم */
+      showWish(name, message);
+
+      nameInput.value = "";
+      messageInput.value = "";
+
+      button.disabled = false;
+      button.textContent = "إرسال التهنئة";
+
+      document.querySelector(".wish-list")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+    })
+    .catch(error => {
+
+      console.error(error);
+
+      alert("حصلت مشكلة في إرسال التهنئة، جربي مرة تانية ❤️");
+
+      button.disabled = false;
+      button.textContent = "إرسال التهنئة";
+    });
+
+  });
+
+});
+</script>
 </body>
 </html>
