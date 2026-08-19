@@ -66,11 +66,9 @@
     position: fixed;
     inset: 0;
     z-index: 999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 24px;
-    background: #ddc9ca url('splash-bg.jpg') center center / cover no-repeat;
+    display:block;
+    padding: 0;
+    background: #ddc9ca var(--splash-image, url('open-screen.jpg.jpeg')) center center / 100% 100% no-repeat;
     transition: opacity .6s ease, visibility .6s ease;
   }
   .splash.hidden{
@@ -78,86 +76,44 @@
     visibility: hidden;
     pointer-events: none;
   }
+  /* The opening artwork is a complete image. Keep the HTML card invisible so
+     the artwork is shown exactly as designed, while the transparent button
+     remains clickable over the printed OPEN button. */
   .splash-card{
-    position: relative;
-    z-index: 0;
-    width: 100%;
-    max-width: 300px;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 36px 20px 30px;
-    text-align: center;
-    overflow: hidden;
-    box-shadow: 0 24px 60px -30px rgba(92,31,38,0.35);
-  }
-  .splash-heart{
-    width: 46px; height: 46px;
-    border-radius: 50%;
-    background: var(--burgundy-deep);
-    display:flex; align-items:center; justify-content:center;
-    margin: 0 auto 16px;
-    position: relative;
-    z-index: 2;
-  }
-  .splash-heart svg{ width: 19px; height: 19px; fill: #F2DAD6; }
-  .splash-names{
-    position: relative;
-    z-index: 2;
-  }
-  .splash-names .name{ font-size: clamp(30px, 9vw, 40px); }
-  .splash-stars{
-    font-family:'Cormorant Garamond', serif;
-    color: var(--gold);
-    font-size: 13px;
-    margin: 8px 0 12px;
-    position: relative;
-    z-index: 2;
-  }
-  .splash-date{
-    font-family:'Cairo', sans-serif;
-    font-size: 13px;
-    color: var(--burgundy);
-    margin-bottom: 3px;
-    position: relative;
-    z-index: 2;
-  }
-  .splash-cordial{
-    font-family:'Cairo', sans-serif;
-    font-size: 12px;
-    color: var(--ink);
-    opacity: .75;
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 2;
-  }
-  .splash-btn{
-    position: relative;
-    z-index: 2;
-    display:inline-block;
-    padding: 10px 34px;
-    background: var(--burgundy-deep);
-    color: var(--ivory);
-    border: none;
-    border-radius: 26px;
-    font-family: 'Cairo', sans-serif;
-    font-size: 13px;
-    letter-spacing: .04em;
-    cursor: pointer;
-    transition: background .2s ease, transform .2s ease;
-  }
-  .splash-btn:hover{ background: var(--burgundy); transform: translateY(-1px); }
-
-  .splash-corner{
     position:absolute;
-    width: 130px;
-    height: auto;
-    opacity: .95;
-    pointer-events:none;
-    z-index: -1;
+    inset:0;
+    width:100%;
+    max-width:none;
+    background:transparent;
+    border:0;
+    border-radius:0;
+    padding:0;
+    text-align:center;
+    overflow:visible;
+    box-shadow:none;
   }
-  .splash-corner.tr{ top:-8px; right:-8px; }
-  .splash-corner.bl{ bottom:-8px; left:-8px; transform: rotate(180deg); }
+  .splash-card > *:not(.splash-btn){ display:none !important; }
+  .splash-btn{
+    position:absolute;
+    left:50%;
+    top:73.5%;
+    transform:translateX(-50%);
+    width:27%;
+    height:7.2%;
+    min-width:0;
+    padding:0;
+    background:transparent;
+    color:transparent;
+    border:0;
+    border-radius:999px;
+    font-size:0;
+    letter-spacing:0;
+    cursor:pointer;
+    transition:none;
+    z-index:5;
+  }
+  .splash-btn:hover{ background:transparent; transform:translateX(-50%); }
+  .splash-btn:focus-visible{ outline:2px solid rgba(255,255,255,.9); outline-offset:3px; }
 
   /* ---------- reusable floral ornaments ---------- */
   .corner-svg{
@@ -349,6 +305,17 @@
   @keyframes floatCue{
     0%,100%{ transform: translateY(0); opacity:.7;}
     50%{ transform: translateY(6px); opacity:1;}
+  }
+
+  /* floating petals - stay visible over the whole invitation */
+  #petalLayer{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:40;
   }
 
   /* floating petals */
@@ -548,6 +515,41 @@
   }
   .wish-submit:hover{ background: var(--burgundy); }
 
+
+  .wish-list{
+    max-width:440px;
+    margin:24px auto 0;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .wish-item{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:16px 18px;
+    text-align:right;
+  }
+  .wish-item-name{
+    font-family:'Aref Ruqaa',serif;
+    color:var(--burgundy-deep);
+    font-size:19px;
+    margin-bottom:5px;
+  }
+  .wish-item-text{
+    font-family:'Cairo',sans-serif;
+    font-size:14px;
+    line-height:1.8;
+    color:var(--ink);
+  }
+  .wish-empty{
+    font-family:'Cairo',sans-serif;
+    font-size:13px;
+    color:var(--ink);
+    opacity:.65;
+    padding:10px;
+  }
+
   .wish-thanks{
     display:none;
     max-width: 440px;
@@ -613,6 +615,7 @@
 </style>
 </head>
 <body>
+<div id="petalLayer" aria-hidden="true"></div>
 
 <!-- ================= OPENING / SPLASH SCREEN ================= -->
 <div class="splash" id="splash">
@@ -822,6 +825,7 @@
     <h3>تم استلام أمنيتك</h3>
     <p>شكرًا لإضافة شوية سحر ليوم أحمد وسالي</p>
   </div>
+  <div id="wishList" class="wish-list" aria-live="polite"></div>
 </section>
 
 <img class="footer-band" src="footer-bouquet.png" alt="" aria-hidden="true">
@@ -856,6 +860,15 @@
   const splash = document.getElementById('splash');
   const splashBtn = document.getElementById('splashOpenBtn');
 
+  // GitHub may have the uploaded file as either open-screen.jpg or
+  // open-screen.jpg.jpeg. Use whichever one actually exists.
+  ['open-screen.jpg', 'open-screen.jpg.jpeg'].forEach((file) => {
+    const probe = new Image();
+    probe.onload = () => splash.style.setProperty('--splash-image', `url(\"${file}\")`);
+    probe.src = file;
+  });
+
+  splashBtn.setAttribute('aria-label', 'Open invitation');
   splashBtn.addEventListener('click', () => {
     splash.classList.add('hidden');
     document.documentElement.classList.remove('locked');
@@ -899,27 +912,100 @@
     }
   });
 
-  // ---- gentle falling petals ----
-  const heroEl = document.getElementById('top');
-  for(let i=0; i<32; i++){
+  // ---- floating petals across the whole invitation ----
+  const petalLayer = document.getElementById('petalLayer');
+  for(let i=0; i<18; i++){
     const p = document.createElement('div');
     p.className = 'petal';
     p.style.left = Math.random()*100 + '%';
     p.style.animationDuration = (12 + Math.random()*12) + 's';
-    p.style.animationDelay = (Math.random()*14) + 's';
-    p.style.opacity = 0.3 + Math.random()*0.3;
-    p.style.transform = `scale(${0.6 + Math.random()*0.8})`;
-    heroEl.appendChild(p);
+    p.style.animationDelay = (-Math.random()*24) + 's';
+    p.style.opacity = 0.25 + Math.random()*0.35;
+    p.style.width = (9 + Math.random()*8) + 'px';
+    p.style.height = p.style.width;
+    petalLayer.appendChild(p);
   }
 
-  // ---- wish form: shows a thank-you message, nothing is sent or stored ----
-  const wishForm = document.getElementById('wishForm');
-  const wishThanks = document.getElementById('wishThanks');
-  wishForm.addEventListener('submit', (e) => {
+  // ---- shared wishes: save to Google Apps Script and load for everyone ----
+  const WISH_API = 'https://script.google.com/macros/s/AKfycbwaeqIWKv-Og-meQ571EwnMwVIzBu5mbdAdv3sv4VQPUmuKmfpHpHQNsFAKOqE2Zkw/exec';
+  const wishList = document.getElementById('wishList');
+
+  function escapeHtml(value){
+    return String(value ?? '').replace(/[&<>\"']/g, ch => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'
+    }[ch]));
+  }
+
+  function renderWishes(data){
+    if(!data || !data.success || !Array.isArray(data.wishes)) throw new Error('bad response');
+    if(!data.wishes.length){
+      wishList.innerHTML = '<div class="wish-empty">لسه مفيش تهاني — كوني أول واحدة تسيب أمنية جميلة 💌</div>';
+      return;
+    }
+    wishList.innerHTML = data.wishes.map(w => `
+      <div class="wish-item">
+        <div class="wish-item-name">${escapeHtml(w.name)}</div>
+        <div class="wish-item-text">${escapeHtml(w.message)}</div>
+      </div>`).join('');
+  }
+
+  function loadWishes(){
+    const callbackName = 'wishesCallback_' + Date.now();
+    window[callbackName] = function(data){
+      try { renderWishes(data); }
+      catch(e){ wishList.innerHTML = '<div class="wish-empty">التهاني هتظهر هنا بعد تفعيل الربط.</div>'; }
+      delete window[callbackName];
+      script.remove();
+    };
+
+    const script = document.createElement('script');
+    script.src = WISH_API + '?callback=' + encodeURIComponent(callbackName) + '&t=' + Date.now();
+    script.onerror = function(){
+      wishList.innerHTML = '<div class="wish-empty">التهاني هتظهر هنا بعد تفعيل الربط.</div>';
+      delete window[callbackName];
+      script.remove();
+    };
+    document.body.appendChild(script);
+  }
+
+  wishForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    wishForm.style.display = 'none';
-    wishThanks.classList.add('show');
+    const name = document.getElementById('wishName').value.trim();
+    const message = document.getElementById('wishText').value.trim();
+    if(!name || !message) return;
+
+    const btn = wishForm.querySelector('.wish-submit');
+    btn.disabled = true;
+    btn.textContent = 'جاري الإرسال...';
+
+    try{
+      await fetch(WISH_API, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({name, message})
+      });
+
+      wishForm.reset();
+      wishForm.style.display = 'none';
+      wishThanks.classList.add('show');
+
+      // give Apps Script a moment to write, then show the new shared list
+      setTimeout(() => {
+        wishForm.style.display = '';
+        wishThanks.classList.remove('show');
+        btn.disabled = false;
+        btn.textContent = 'إرسال التهنئة';
+        loadWishes();
+      }, 1400);
+    }catch(err){
+      btn.disabled = false;
+      btn.textContent = 'إرسال التهنئة';
+      alert('حصلت مشكلة في إرسال التهنئة، جربي مرة تانية.');
+    }
   });
+
+  loadWishes();
 </script>
 
 </body>
