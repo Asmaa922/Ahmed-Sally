@@ -842,16 +842,6 @@
     wishForm.insertAdjacentElement('afterend', wishList);
   }
 
-  let wishFrame = document.getElementById('wishSubmitFrame');
-  if(!wishFrame){
-    wishFrame = document.createElement('iframe');
-    wishFrame.id = 'wishSubmitFrame';
-    wishFrame.name = 'wishSubmitFrame';
-    wishFrame.title = 'wish submission';
-    wishFrame.style.display = 'none';
-    document.body.appendChild(wishFrame);
-  }
-
   function cleanWish(value){
     return String(value ?? '').trim();
   }
@@ -941,41 +931,40 @@
     wishList.prepend(item);
   }
 
-  wishForm.addEventListener('submit', (e) => {
+  wishForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = cleanWish(document.getElementById('wishName').value);
     const message = cleanWish(document.getElementById('wishText').value);
     if(!name || !message) return;
 
-    const subForm = document.createElement('form');
-    subForm.method = 'POST';
-    subForm.action = WISH_API;
-    subForm.target = 'wishSubmitFrame';
+    const submitBtn = wishForm.querySelector('.wish-submit');
+    submitBtn.textContent = 'جاري الإرسال...';
+    submitBtn.disabled = true;
 
-    const nameInput = document.createElement('input');
-    nameInput.type = 'hidden';
-    nameInput.name = 'name';
-    nameInput.value = name;
+    try {
+      const response = await fetch(WISH_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ name: name, message: message })
+      });
 
-    const msgInput = document.createElement('input');
-    msgInput.type = 'hidden';
-    msgInput.name = 'message';
-    msgInput.value = message;
-
-    subForm.appendChild(nameInput);
-    subForm.appendChild(msgInput);
-    document.body.appendChild(subForm);
-    subForm.submit();
-    subForm.remove();
-
-    addWishToScreen(name, message);
-    wishForm.reset();
-    wishForm.style.display = 'none';
-    wishThanks.classList.add('show');
-
-    setTimeout(() => {
-      loadWishes();
-    }, 2000);
+      const result = await response.json();
+      
+      if(result.success) {
+        addWishToScreen(name, message);
+        wishForm.reset();
+        wishForm.style.display = 'none';
+        wishThanks.classList.add('show');
+      } else {
+        alert('حدث خطأ: ' + (result.error || 'تعذر الحفظ'));
+      }
+    } catch(err) {
+      console.error(err);
+      alert('تأكد من اتصالك بالإنترنت وحاول مرة أخرى.');
+    } finally {
+      submitBtn.textContent = 'إرسال التهنئة';
+      submitBtn.disabled = false;
+    }
   });
 
   // Load wishes on start
