@@ -76,9 +76,6 @@
     visibility: hidden;
     pointer-events: none;
   }
-  /* The opening artwork is a complete image. Keep the HTML card invisible so
-     the artwork is shown exactly as designed, while the transparent button
-     remains clickable over the printed OPEN button. */
   .splash-card{
     position:absolute;
     inset:0;
@@ -161,7 +158,6 @@
   .side-strip.right{ top: 0; right: -6px; transform: scaleX(-1); }
   .side-strip.left{ bottom: 0; left: -6px; transform: scaleY(-1); }
 
-  /* small repeated floral corner accents inside the middle sections */
   .corner-cluster{
     position:absolute;
     width: clamp(190px, 46vw, 320px);
@@ -173,7 +169,6 @@
   .corner-cluster.tr{ top:0; right:0; }
   .corner-cluster.bl{ bottom:0; left:0; }
 
-  /* extra clearance so the corner cluster never sits on top of the text */
   section.corner-pad-top{ padding-top: 150px; }
   section.corner-pad-bottom{ padding-bottom: 130px; }
 
@@ -183,14 +178,13 @@
     section.corner-pad-bottom{ padding-bottom: 100px; }
   }
 
-  /* full-width top branch & bottom bouquet bands */
   .header-band{
     position: relative;
     width: 100%;
     display: block;
     pointer-events: none;
     opacity: 0.95;
-    margin-bottom: -6px; /* let content overlap the fade-out edge slightly */
+    margin-bottom: -6px;
   }
   .footer-band{
     position: relative;
@@ -535,6 +529,42 @@
     to{ opacity:1; transform: translateY(0); }
   }
 
+  /* wishes list styles */
+  .wish-list {
+    max-width: 440px;
+    margin: 20px auto 0;
+    text-align: right;
+  }
+  .wish-item {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(124,46,54,0.05);
+  }
+  .wish-item-name {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--burgundy-deep);
+    margin-bottom: 6px;
+  }
+  .wish-item-text {
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.6;
+    word-break: break-word;
+  }
+  .wish-empty {
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    color: var(--gold);
+    padding: 20px;
+  }
+
   /* music button */
   .music-btn{
     position: fixed;
@@ -575,33 +605,27 @@
 <!-- ================= OPENING / SPLASH SCREEN ================= -->
 <div class="splash" id="splash">
   <div class="splash-card">
-
     <div class="splash-heart">
       <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.5-9C.6 8.4 2 5 5.2 5c1.9 0 3.3 1 4.8 2.7C11.5 6 12.9 5 14.8 5 18 5 19.4 8.4 21.5 12c-2.5 4.4-9.5 9-9.5 9z"/></svg>
     </div>
-
     <div class="splash-names">
       <span class="name" style="font-size:clamp(30px,9vw,40px);">Ahmed</span>
       <div class="amp" style="font-size:clamp(19px,5vw,26px);">&amp;</div>
       <span class="name" style="font-size:clamp(30px,9vw,40px);">Sally</span>
     </div>
-
     <div class="splash-stars lang-ar">✦ 🤍 ✦</div>
-
     <div class="splash-date lang-ar">22 أغسطس 2026</div>
     <div class="splash-cordial lang-ar">يتشرفان بدعوتكم</div>
-
     <button class="splash-btn" id="splashOpenBtn">OPEN</button>
   </div>
 </div>
 
-<!-- ============ shared floral artwork (original, hand-built SVG) ============ -->
+<!-- ============ shared floral artwork ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
   <filter id="softBlur" x="-30%" y="-30%" width="160%" height="160%">
     <feGaussianBlur stdDeviation="0.6"/>
   </filter>
-
   <radialGradient id="petalBurgundy" cx="35%" cy="30%" r="75%">
     <stop offset="0%" stop-color="#C97D82"/>
     <stop offset="55%" stop-color="#9B3A42"/>
@@ -621,82 +645,12 @@
     <stop offset="0%" stop-color="#9CAF7E"/>
     <stop offset="100%" stop-color="#6F8757"/>
   </linearGradient>
-
-  <!-- a single watercolor-style rose bloom, built from a ring of cupped petals -->
-  <g id="roseBloom">
-    <circle cx="0" cy="0" r="19" fill="url(#petalDusty)" opacity="0.35" filter="url(#softBlur)"/>
-    <g fill="url(#petalBurgundy)" opacity="0.92">
-      <path d="M0,0 C3,-13 12,-16 17,-8 C20,-2 15,6 5,4 C2,3.3 0.5,1.6 0,0 Z" transform="rotate(0)"/>
-      <path d="M0,0 C3,-13 12,-16 17,-8 C20,-2 15,6 5,4 C2,3.3 0.5,1.6 0,0 Z" transform="rotate(72)"/>
-      <path d="M0,0 C3,-13 12,-16 17,-8 C20,-2 15,6 5,4 C2,3.3 0.5,1.6 0,0 Z" transform="rotate(144)"/>
-      <path d="M0,0 C3,-13 12,-16 17,-8 C20,-2 15,6 5,4 C2,3.3 0.5,1.6 0,0 Z" transform="rotate(216)"/>
-      <path d="M0,0 C3,-13 12,-16 17,-8 C20,-2 15,6 5,4 C2,3.3 0.5,1.6 0,0 Z" transform="rotate(288)"/>
-    </g>
-    <g fill="url(#petalDusty)" opacity="0.95">
-      <path d="M0,0 C2,-8 8,-10 11,-4 C13,0 9,5 3,3 C1,2.4 0.3,1 0,0 Z" transform="rotate(36)"/>
-      <path d="M0,0 C2,-8 8,-10 11,-4 C13,0 9,5 3,3 C1,2.4 0.3,1 0,0 Z" transform="rotate(108)"/>
-      <path d="M0,0 C2,-8 8,-10 11,-4 C13,0 9,5 3,3 C1,2.4 0.3,1 0,0 Z" transform="rotate(180)"/>
-      <path d="M0,0 C2,-8 8,-10 11,-4 C13,0 9,5 3,3 C1,2.4 0.3,1 0,0 Z" transform="rotate(252)"/>
-      <path d="M0,0 C2,-8 8,-10 11,-4 C13,0 9,5 3,3 C1,2.4 0.3,1 0,0 Z" transform="rotate(324)"/>
-    </g>
-    <g fill="url(#petalBlush)" opacity="0.98">
-      <path d="M0,0 C1.5,-4.5 4.5,-5.5 6,-2 C7,0.5 5,3 1.5,2 C0.6,1.7 0.2,0.6 0,0 Z" transform="rotate(0)"/>
-      <path d="M0,0 C1.5,-4.5 4.5,-5.5 6,-2 C7,0.5 5,3 1.5,2 C0.6,1.7 0.2,0.6 0,0 Z" transform="rotate(120)"/>
-      <path d="M0,0 C1.5,-4.5 4.5,-5.5 6,-2 C7,0.5 5,3 1.5,2 C0.6,1.7 0.2,0.6 0,0 Z" transform="rotate(240)"/>
-    </g>
-    <circle cx="0" cy="0" r="1.6" fill="#5C1F26"/>
-  </g>
-
-  <!-- a small bud -->
-  <g id="roseBud">
-    <ellipse cx="0" cy="0" rx="9" ry="12" fill="url(#petalBurgundy)" filter="url(#softBlur)"/>
-    <path d="M0,-9 C5,-7 6,0 2,6 C-1,9 -6,7 -7,1 C-8,-5 -4,-9 0,-9Z" fill="url(#petalDusty)"/>
-  </g>
-
-  <!-- a leaf -->
-  <g id="leaf">
-    <path d="M0,0 C10,-4 22,-2 28,8 C22,10 8,10 0,0 Z" fill="url(#leafGrad)"/>
-    <path d="M0,0 L28,8" stroke="#5C7247" stroke-width="0.6" opacity="0.5"/>
-  </g>
-
-  <!-- a full corner cluster: several roses + buds + leaves + a thin curling stem -->
-  <symbol id="roseCluster" viewBox="0 0 220 220">
-    <path d="M4,4 C40,10 30,60 70,66 C110,72 100,30 150,40 C175,45 180,70 210,72"
-          fill="none" stroke="#B78A4A" stroke-width="1" opacity="0.55"/>
-    <use href="#leaf" transform="translate(18,30) rotate(-25) scale(0.9)"/>
-    <use href="#leaf" transform="translate(85,20) rotate(200) scale(0.7)"/>
-    <use href="#leaf" transform="translate(130,55) rotate(30) scale(1.05)"/>
-    <use href="#leaf" transform="translate(6,70) rotate(70) scale(0.8)"/>
-    <use href="#roseBloom" transform="translate(34,44) scale(1.15)"/>
-    <use href="#roseBloom" transform="translate(96,34) scale(0.8)"/>
-    <use href="#roseBloom" transform="translate(150,66) scale(1)"/>
-    <use href="#roseBud" transform="translate(64,60) rotate(20) scale(1.1)"/>
-    <use href="#roseBud" transform="translate(118,44) rotate(-15) scale(0.9)"/>
-    <use href="#roseBud" transform="translate(178,80) rotate(40) scale(0.8)"/>
-  </symbol>
-
-  <!-- a slender side sprig for section edges -->
-  <symbol id="sideSprig" viewBox="0 0 140 320">
-    <path d="M70,4 C60,60 80,120 66,180 C54,236 78,280 68,316"
-          fill="none" stroke="#B78A4A" stroke-width="1" opacity="0.5"/>
-    <use href="#leaf" transform="translate(30,40) rotate(-40) scale(0.85)"/>
-    <use href="#leaf" transform="translate(78,90) rotate(150) scale(0.7)"/>
-    <use href="#leaf" transform="translate(24,170) rotate(-60) scale(0.9)"/>
-    <use href="#leaf" transform="translate(80,230) rotate(160) scale(0.75)"/>
-    <use href="#roseBloom" transform="translate(58,60) scale(0.9)"/>
-    <use href="#roseBloom" transform="translate(46,190) scale(1)"/>
-    <use href="#roseBud" transform="translate(88,130) rotate(20) scale(0.9)"/>
-    <use href="#roseBud" transform="translate(40,260) rotate(-25) scale(0.85)"/>
-  </symbol>
 </defs>
 </svg>
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
-
-  <!-- top header branch band (only decoration on this page, per instructions) -->
   <img class="header-band" style="position:absolute; top:0; left:0; width:100%; height:auto; z-index:-1;" src="header-branch.png" alt="" aria-hidden="true">
-
   <div class="hero-frame">
     <svg width="54" height="54" viewBox="0 0 54 54" style="margin:0 auto 18px; display:block;">
       <circle cx="27" cy="27" r="27" fill="#7C2E36"/>
@@ -707,21 +661,17 @@
       <span class="amp">&amp;</span>
       <span class="name">Sally</span>
     </div>
-
     <p class="verse lang-ar">وجعل بينكم مودة ورحمة</p>
-
     <div class="divider">
       <div class="rule"></div>
       <svg viewBox="0 0 46 20"><path d="M2 10 C 12 0, 18 20, 23 10 C 28 0, 34 20, 44 10" stroke="#B78A4A" stroke-width="1.2" fill="none"/></svg>
       <div class="rule"></div>
     </div>
-
     <p class="event-line lang-ar">
       <b>22 أغسطس 2026</b><br>
       9:00 مساءً<br>
       قاعة الجوهرة
     </p>
-
     <div class="scroll-cue lang-ar">للتمرير للأسفل<br>↓</div>
   </div>
 </section>
@@ -732,7 +682,6 @@
   <div class="section-eyebrow lang-ar">تبقى لنا</div>
   <h2 class="section-title lang-ar">العد التنازلي</h2>
   <p class="section-sub lang-ar">حتى نحتفل معًا بليلة عمرنا</p>
-
   <div class="countdown">
     <div class="cd-card"><div class="cd-num" id="cd-days">--</div><div class="cd-label lang-ar">يوم</div></div>
     <div class="cd-card"><div class="cd-num" id="cd-hours">--</div><div class="cd-label lang-ar">ساعة</div></div>
@@ -747,7 +696,6 @@
   <div class="section-eyebrow lang-ar">تفاصيل الحفل</div>
   <h2 class="section-title lang-ar">مكان الاحتفال</h2>
   <p class="section-sub lang-ar">يسعدنا حضوركم معنا في هذه الليلة</p>
-
   <div class="details-card">
     <div class="detail-row">
       <div class="detail-label lang-ar">التاريخ والوقت</div>
@@ -766,7 +714,7 @@
 <!-- ================= A LITTLE WISH ================= -->
 <section id="wishes" class="corner-pad-top" style="overflow:hidden;">
   <img class="corner-cluster tr" src="corner-flower-tr.png" alt="" aria-hidden="true">
-
+  <h2 class="section-title lang-ar">تهاني الأحباء</h2>
   <p class="section-sub lang-ar">اتركوا لأحمد وسالي أمنية جميلة يفتكروها</p>
 
   <form class="wish-form lang-ar" id="wishForm">
@@ -793,6 +741,8 @@
 <audio id="bgAudio" src="El_Leila.mp3" loop preload="none"></audio>
 
 <script>
+  const WISH_API = 'https://script.google.com/macros/s/AKfycbxPgU-bMRmgjWJZ8168jtqS7Fat1Bgjs0sadKqznUFP9nmuW7Dyrr1z9Rcv5XNSHczs/exec';
+
   // ---- shared music state ----
   let playing = false;
   const bgAudio = document.getElementById('bgAudio');
@@ -814,11 +764,9 @@
   const splash = document.getElementById('splash');
   const splashBtn = document.getElementById('splashOpenBtn');
 
-  // GitHub may have the uploaded file as either open-screen.jpg or
-  // open-screen.jpg.jpeg. Use whichever one actually exists.
   ['open-screen.jpg', 'open-screen.jpg.jpeg'].forEach((file) => {
     const probe = new Image();
-    probe.onload = () => splash.style.setProperty('--splash-image', `url(\"${file}\")`);
+    probe.onload = () => splash.style.setProperty('--splash-image', `url("${file}")`);
     probe.src = file;
   });
 
@@ -826,12 +774,10 @@
   splashBtn.addEventListener('click', () => {
     splash.classList.add('hidden');
     document.documentElement.classList.remove('locked');
-    // start the music right on this user click (browsers allow audio after a real click)
     startMusic();
   });
 
   // ---- countdown ----
-  // Wedding is 22 August 2026, 9:00 PM, Cairo time (UTC+3 in summer)
   const target = new Date("2026-08-22T21:00:00+03:00").getTime();
 
   function tick(){
@@ -866,7 +812,7 @@
     }
   });
 
-  // ---- gentle falling petals (restored across the whole invitation) ----
+  // ---- gentle falling petals ----
   function makePetal(){
     const p = document.createElement('div');
     p.className = 'petal';
@@ -886,11 +832,9 @@
   setInterval(makePetal, 850);
 
   // ---- shared wishes: Google Sheet <-> invitation ----
-  const WISH_API = 'https://script.google.com/macros/s/AKfycbxPgU-bMRmgjWJZ8168jtqS7Fat1Bgjs0sadKqznUFP9nmuW7Dyrr1z9Rcv5XNSHczs/exec';
   const wishForm = document.getElementById('wishForm');
   const wishThanks = document.getElementById('wishThanks');
 
-  // Keep the list outside the form so every saved wish is visible to everyone.
   let wishList = wishForm.parentElement.querySelector('.wish-list');
   if(!wishList){
     wishList = document.createElement('div');
@@ -898,9 +842,6 @@
     wishForm.insertAdjacentElement('afterend', wishList);
   }
 
-  // A hidden iframe lets the browser submit a normal POST to Google Apps Script
-  // without the CORS/no-cors limitation that was making the previous version
-  // look successful while the sheet stayed empty.
   let wishFrame = document.getElementById('wishSubmitFrame');
   if(!wishFrame){
     wishFrame = document.createElement('iframe');
@@ -936,7 +877,7 @@
       const empty = document.createElement('div');
       empty.className = 'wish-empty';
       empty.textContent = 'كونوا أول من يترك تهنئة ❤️';
-    const WISH_API = 'https://script.google.com/macros/s/AKfycbys8xtnK5jw16G80TMbXBCDJhVr-fJDuzUJFT2GdL9Hx2KixMN0m7Tolu8U1AojfXP0bA/exec';
+      wishList.appendChild(empty);
       return;
     }
 
@@ -981,77 +922,64 @@
   }
 
   function addWishToScreen(name, message){
-    // Show the new wish immediately while the sheet is being updated.
-    const current = [];
-    wishList.querySelectorAll('.wish-item').forEach(item => {
-      current.push({
-        name: item.querySelector('.wish-item-name')?.textContent || '',
-        message: item.querySelector('.wish-item-text')?.textContent || ''
-      });
-    });
-    current.push({name, message});
-    renderWishes({wishes: current});
+    const existingEmpty = wishList.querySelector('.wish-empty');
+    if(existingEmpty) existingEmpty.remove();
+
+    const item = document.createElement('div');
+    item.className = 'wish-item';
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'wish-item-name';
+    nameEl.textContent = name;
+
+    const textEl = document.createElement('div');
+    textEl.className = 'wish-item-text';
+    textEl.textContent = message;
+
+    item.appendChild(nameEl);
+    item.appendChild(textEl);
+    wishList.prepend(item);
   }
 
   wishForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    const nameInput = document.getElementById('wishName');
-    const textInput = document.getElementById('wishText');
-    const submit = wishForm.querySelector('.wish-submit');
-    const name = nameInput.value.trim();
-    const message = textInput.value.trim();
-
+    const name = cleanWish(document.getElementById('wishName').value);
+    const message = cleanWish(document.getElementById('wishText').value);
     if(!name || !message) return;
 
-    submit.disabled = true;
-    submit.textContent = 'جاري إرسال التهنئة...';
+    const subForm = document.createElement('form');
+    subForm.method = 'POST';
+    subForm.action = WISH_API;
+    subForm.target = 'wishSubmitFrame';
 
-    // Native browser POST to Apps Script. This is intentionally NOT fetch/no-cors.
-    const postForm = document.createElement('form');
-    postForm.method = 'POST';
-    postForm.action = WISH_API;
-    postForm.target = 'wishSubmitFrame';
-    postForm.style.display = 'none';
+    const nameInput = document.createElement('input');
+    nameInput.type = 'hidden';
+    nameInput.name = 'name';
+    nameInput.value = name;
 
-    const nameField = document.createElement('input');
-    nameField.type = 'hidden';
-    nameField.name = 'name';
-    nameField.value = name;
+    const msgInput = document.createElement('input');
+    msgInput.type = 'hidden';
+    msgInput.name = 'message';
+    msgInput.value = message;
 
-    const messageField = document.createElement('input');
-    messageField.type = 'hidden';
-    messageField.name = 'message';
-    messageField.value = message;
+    subForm.appendChild(nameInput);
+    subForm.appendChild(msgInput);
+    document.body.appendChild(subForm);
+    subForm.submit();
+    subForm.remove();
 
-    postForm.appendChild(nameField);
-    postForm.appendChild(messageField);
-    document.body.appendChild(postForm);
-
-    postForm.submit();
-
-    // Give Apps Script time to append the row, then read the sheet again.
     addWishToScreen(name, message);
     wishForm.reset();
+    wishForm.style.display = 'none';
     wishThanks.classList.add('show');
-    submit.textContent = 'تم إرسال التهنئة ❤️';
 
-    setTimeout(async () => {
-      await loadWishes();
-      postForm.remove();
-      submit.disabled = false;
-      submit.textContent = 'إرسال التهنئة';
-    }, 1800);
-
-    wishThanks.scrollIntoView({ behavior:'smooth', block:'center' });
+    setTimeout(() => {
+      loadWishes();
+    }, 2000);
   });
 
+  // Load wishes on start
   loadWishes();
-  setInterval(loadWishes, 15000);
-
-  loadWishes();
-  setInterval(loadWishes, 15000);
 </script>
-
 </body>
 </html>
